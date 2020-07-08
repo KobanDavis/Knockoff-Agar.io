@@ -10,7 +10,7 @@ interface Game {
 	frame: number
 }
 
-const generateColor = (amount: number = 20): string => {
+const generateColor = (amount: number = 120): string => {
 	const hue = Math.trunc((360 / amount) * (Math.random() * amount))
 	return `hsl(${hue}, 100%, 50%)`
 }
@@ -33,7 +33,7 @@ class Game {
 			const x = Math.random() * innerWidth * 2 - innerWidth
 			const y = Math.random() * innerHeight * 2 - innerHeight
 
-			blobs.push(new Blob(this.ctx, new Vector(x, y), 10, generateColor()))
+			blobs.push(new Blob(this.ctx, new Vector(x, y), Math.random() * 5 + 10, generateColor()))
 		}
 
 		blobs.forEach((blob) => this.addBlob(blob))
@@ -44,7 +44,7 @@ class Game {
 				const x = Math.random() * innerWidth * 2 - innerWidth
 				const y = Math.random() * innerHeight * 2 - innerHeight
 
-				this.addBlob(new Blob(this.ctx, new Vector(x, y), 10, generateColor()))
+				this.addBlob(new Blob(this.ctx, new Vector(x, y), Math.random() * 5 + 10, generateColor()))
 			}
 			this.ctx.save()
 			this.ctx.setTransform(1, 0, 0, 1, 0, 0)

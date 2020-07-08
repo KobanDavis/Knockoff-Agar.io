@@ -7,10 +7,11 @@ class InputHandler {
 	}
 
 	private init(): void {
-		window.addEventListener('keydown', (e) => {
+		window.addEventListener('keyup', (e) => {
 			switch (e.key.toLowerCase()) {
 				case 'w':
 					this._user.spewMass(this._game)
+
 					break
 				case 'space':
 					break

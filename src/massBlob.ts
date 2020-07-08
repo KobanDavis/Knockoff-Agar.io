@@ -11,18 +11,18 @@ class MassBlob extends Blob {
 		super(_ctx, _vector, _radius, _color)
 		this._direction = _direction
 		this.canBeEaten = false
+		this.velocity = 1.055 // magic
 		this.init()
-		this.velocity = 1.2 // magic
 	}
 
 	private init(): void {
 		const interval = setInterval(() => {
-			if (this.velocity < 0.7 /* magic */) {
+			if (this.velocity < 0.9 /* magic */) {
 				this.canBeEaten = true
 				clearInterval(interval)
 			}
 			this.vector.add(this._direction.scale(this.velocity).position)
-			this.velocity *= 0.994 // lovely magic number :)
+			this.velocity *= 0.9993 // lovely magic number :)
 		})
 	}
 }
