@@ -1,39 +1,29 @@
 import './index.less'
 import Blob from './blob'
-
-class Game {
-	private ctx: CanvasRenderingContext2D
-	private blobs: Blob[]
-	constructor() {
-		this.ctx = Game.init()
-		this.startDrawLoop()
-	}
-
-	private startDrawLoop(): void {
-		const drawLoop = (): void => {
-			this.ctx.clearRect(0, 0, innerWidth, innerHeight)
-			this.draw()
-			requestAnimationFrame(drawLoop)
-		}
-		drawLoop()
-	}
-
-	private draw(): void {
-		this.ctx.fillStyle = '#000000'
-		this.ctx.fillRect(0, 0, innerWidth, innerHeight)
-	}
-
-	private static init(): CanvasRenderingContext2D {
-		const canvas = document.createElement('canvas')
-		canvas.setAttribute('width', `${innerWidth}px`)
-		canvas.setAttribute('height', `${innerHeight}px`)
-		document.body.appendChild(canvas)
-		return canvas.getContext('2d')
-	}
-
-	public addBlob(blob: Blob): void {
-		this.blobs.push(blob)
-	}
-}
+import Vector from './vector'
+import Mouse from './mouse'
+import Game from './game'
 
 const game = new Game()
+const mouse = new Mouse()
+
+const user = new Blob(game.ctx, new Vector(innerWidth / 2, innerHeight / 2), 20)
+const blobs: Blob[] = [user]
+
+for (let i = 0; i < 10; i++) {
+	const x = Math.random() * innerWidth
+	const y = Math.random() * innerHeight
+	blobs.push(new Blob(game.ctx, new Vector(x, y), 10))
+}
+
+blobs.forEach((blob) => game.addBlob(blob))
+
+// Move blob to mouse location at fixed rate
+setInterval(() => {
+	const direction = mouse
+		.getPosition()
+		.sub({ x: innerWidth / 2, y: innerHeight / 2 })
+		.normalise()
+	game.ctx.translate(-direction.position.x, -direction.position.y)
+	user.vector.add(direction.position)
+})
