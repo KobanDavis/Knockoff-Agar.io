@@ -29,7 +29,7 @@
 		"import/no-unresolved": "off",
 		"import/order": "warn", // use npm run lint:fix
 		"import/prefer-default-export": "warn",
-
+		"import/no-cycle": "off",
 		// ESLint
 		"lines-between-class-members": [
 			"error",
