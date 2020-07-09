@@ -20,7 +20,7 @@ class Game {
 		this.blobs = []
 		this.frame = 0
 		this.ctx = Game.init()
-		this.user = new UserBlob(this.ctx, new Vector(innerWidth / 2, innerHeight / 2), 20, generateColor())
+		this.user = new UserBlob(this.ctx, new Vector(0, 0), 20, generateColor())
 		// eslint-disable-next-line
 		new InputHandler(this, this.user)
 		this.startDrawLoop()
@@ -37,19 +37,14 @@ class Game {
 		}
 
 		blobs.forEach((blob) => this.addBlob(blob))
+		this.ctx.translate(innerWidth / 2, innerHeight / 2)
 
 		const drawLoop = (): void => {
 			this.frame++
-			if (this.frame % 60 === 0) {
-				const x = Math.random() * innerWidth * 2 - innerWidth
-				const y = Math.random() * innerHeight * 2 - innerHeight
-
-				this.addBlob(new Blob(this.ctx, new Vector(x, y), Math.random() * 5 + 10, generateColor()))
-			}
-			this.ctx.save()
+			if (this.frame % 60 === 0) this.generateFood(1)
 			this.ctx.setTransform(1, 0, 0, 1, 0, 0)
+
 			this.ctx.clearRect(0, 0, innerWidth, innerHeight)
-			this.ctx.restore()
 			this.draw()
 			requestAnimationFrame(drawLoop)
 		}
@@ -80,6 +75,14 @@ class Game {
 
 	public addBlob(blob: Blob): void {
 		this.blobs.push(blob)
+	}
+
+	public generateFood(n: number): void {
+		for (let i = 0; i < n; i++) {
+			const x = Math.random() * innerWidth * 2 - innerWidth
+			const y = Math.random() * innerHeight * 2 - innerHeight
+			this.addBlob(new Blob(this.ctx, new Vector(x, y), Math.random() * 5 + 10, generateColor()))
+		}
 	}
 }
 
