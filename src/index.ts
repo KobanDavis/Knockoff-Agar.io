@@ -1,5 +1,5 @@
 import './index.less'
 import Game from './game'
 
-/* eslint-disable-next-line */
-new Game()
+const game = new Game()
+game.startDrawLoop()

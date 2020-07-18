@@ -23,10 +23,9 @@ class Game {
 		this.user = new UserBlob(this.ctx, new Vector(0, 0), 20, generateColor())
 		// eslint-disable-next-line
 		new InputHandler(this, this.user)
-		this.startDrawLoop()
 	}
 
-	private startDrawLoop(): void {
+	public startDrawLoop(): void {
 		const blobs: Blob[] = []
 
 		for (let i = 0; i < 50; i++) {
@@ -37,14 +36,8 @@ class Game {
 		}
 
 		blobs.forEach((blob) => this.addBlob(blob))
-		this.ctx.translate(innerWidth / 2, innerHeight / 2)
 
 		const drawLoop = (): void => {
-			this.frame++
-			if (this.frame % 60 === 0) this.generateFood(1)
-			this.ctx.setTransform(1, 0, 0, 1, 0, 0)
-
-			this.ctx.clearRect(0, 0, innerWidth, innerHeight)
 			this.draw()
 			requestAnimationFrame(drawLoop)
 		}
@@ -52,8 +45,21 @@ class Game {
 	}
 
 	private draw(): void {
+		// Reset canvas
+		this.ctx.setTransform(1, 0, 0, 1, 0, 0)
+		this.ctx.clearRect(0, 0, innerWidth, innerHeight)
+
 		this.user.moveToCursor()
+
+		this.ctx.translate(innerWidth / 2, innerHeight / 2)
+		const scale = 30 / (this.user._radius / 2)
+		this.ctx.scale(scale, scale)
+		this.ctx.translate(-this.user._vector.position.x, -this.user._vector.position.y)
+
 		this.user.show()
+
+		this.frame++
+		if (this.frame % 60 === 0) this.generateFood(1)
 
 		for (let i = this.blobs.length - 1; i > 0; i--) {
 			const blob = this.blobs[i]

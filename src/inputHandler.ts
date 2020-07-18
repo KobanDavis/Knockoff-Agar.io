@@ -11,9 +11,9 @@ class InputHandler {
 			switch (e.key.toLowerCase()) {
 				case 'w':
 					this._user.spewMass(this._game)
-
 					break
 				case 'space':
+					// split
 					break
 				default:
 					break
