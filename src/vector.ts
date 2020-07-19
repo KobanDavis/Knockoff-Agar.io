@@ -17,28 +17,28 @@ class Vector {
 		}
 	}
 
-	public normalise(): Vector {
+	public normalise(): this {
 		const hypotenuse = Vector.getHypotenuse(this.position)
 		this.position.x = this.position.x / hypotenuse || 0
 		this.position.y = this.position.y / hypotenuse || 0
 		return this
 	}
 
-	public subtract(v: Position | Vector): Vector {
+	public subtract(v: Position | Vector): this {
 		const position = 'x' in v ? v : v.position
 		this.position.x -= position.x
 		this.position.y -= position.y
 		return this
 	}
 
-	public add(v: Position | Vector): Vector {
+	public add(v: Position | Vector): this {
 		const position = 'x' in v ? v : v.position
 		this.position.x += position.x
 		this.position.y += position.y
 		return this
 	}
 
-	public scale(s: number): Vector {
+	public scale(s: number): this {
 		this.position.x *= s
 		this.position.y *= s
 		return this

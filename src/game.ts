@@ -59,7 +59,12 @@ class Game {
 		this.user.show()
 
 		this.frame++
-		if (this.frame % 60 === 0) this.generateFood(1)
+		if (this.frame % 60 === 0) {
+			if (this.user._radius > 20) {
+				this.user._radius -= 0.5
+			}
+			this.generateFood(1)
+		}
 
 		for (let i = this.blobs.length - 1; i > 0; i--) {
 			const blob = this.blobs[i]

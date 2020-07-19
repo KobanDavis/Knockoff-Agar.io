@@ -22,12 +22,10 @@ class UserBlob extends Blob {
 	}
 
 	public moveToCursor(): void {
-		const direction = this.mouse
-			.getPosition()
-			.subtract({ x: innerWidth / 2, y: innerHeight / 2 })
-			.normalise()
-			.scale(this.velocity)
-		// this._ctx.translate(innerWidth / 2, innerHeight / 2)
+		const direction = this.mouse.getPosition().subtract({ x: innerWidth / 2, y: innerHeight / 2 })
+		const dist = Math.abs(direction.position.x) + Math.abs(direction.position.y)
+		const scale = dist > 100 ? 1 : dist / 100
+		direction.normalise().scale(this.velocity * scale)
 		this._vector.add(direction.position)
 	}
 
@@ -36,7 +34,6 @@ class UserBlob extends Blob {
 		const newArea = Math.PI * n ** 2 + area
 		const radius = Math.sqrt(newArea / Math.PI)
 		this._radius = radius
-		// this.setVelocity(7 / (Math.PI * this._radius ** 2) ** (1 / 10))
 	}
 
 	public spewMass(game: Game): void {
