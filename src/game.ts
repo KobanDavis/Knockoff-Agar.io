@@ -57,13 +57,15 @@ class Game {
 		this.ctx.translate(-this.user._vector.position.x, -this.user._vector.position.y)
 
 		this.user.show()
+		// this.ctx.fillStyle = 'black'
+		// this.ctx.fillText(this.user._radius.toString(), this.user._vector.position.x, this.user._vector.position.y)
 
 		this.frame++
 		if (this.frame % 60 === 0) {
 			if (this.user._radius > 20) {
 				this.user._radius -= 0.5
 			}
-			this.generateFood(1)
+			this.generateFood(10)
 		}
 
 		for (let i = this.blobs.length - 1; i > 0; i--) {
@@ -78,8 +80,12 @@ class Game {
 
 	private static init(): CanvasRenderingContext2D {
 		const canvas = document.createElement('canvas')
-		canvas.setAttribute('width', `${innerWidth}px`)
-		canvas.setAttribute('height', `${innerHeight}px`)
+		const resizeCanvas = (): void => {
+			canvas.setAttribute('width', `${innerWidth}px`)
+			canvas.setAttribute('height', `${innerHeight}px`)
+		}
+		window.addEventListener('resize', resizeCanvas)
+		resizeCanvas()
 		document.body.appendChild(canvas)
 		return canvas.getContext('2d')
 	}

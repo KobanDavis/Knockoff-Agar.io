@@ -11,7 +11,7 @@ class MassBlob extends Blob {
 		super(_ctx, _vector, _radius, _color)
 		this._direction = _direction
 		this.canBeEaten = false
-		this._velocity = _velocity * 5
+		this._velocity = _velocity * 7
 		this.init()
 	}
 

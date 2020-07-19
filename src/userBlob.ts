@@ -14,7 +14,7 @@ class UserBlob extends Blob {
 	constructor(_ctx: CanvasRenderingContext2D, _vector: Vector, _radius: number, _color: string) {
 		super(_ctx, _vector, _radius, _color)
 		this.mouse = new Mouse()
-		this.velocity = 5
+		this.velocity = 4
 	}
 
 	public canEatBlob(blob: Blob): boolean {
