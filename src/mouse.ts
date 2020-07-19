@@ -15,7 +15,7 @@ class Mouse {
 	}
 
 	public getPosition(): Vector {
-		return new Vector(this.position.x, this.position.y)
+		return new Vector(this.position)
 	}
 }
 

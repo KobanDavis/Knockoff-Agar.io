@@ -17,13 +17,10 @@ class MassBlob extends Blob {
 
 	private init(): void {
 		const interval = (): void => {
-			if (this._velocity < 0.5 /* magic */) {
-				this.canBeEaten = true
-				return
-			}
-			console.log(this._direction, this._velocity)
-			this.vector.add(new Vector(this._direction.position.x, this._direction.position.y).scale(this._velocity).position)
-			this._velocity *= 0.9 // lovely magic number :)
+			if (this._velocity < 5) this.canBeEaten = true
+			if (this._velocity < 0.5) return
+			this.vector.add(new Vector(this._direction).scale(this._velocity).position)
+			this._velocity *= 0.95
 			requestAnimationFrame(interval)
 		}
 		interval()

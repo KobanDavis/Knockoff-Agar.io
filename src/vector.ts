@@ -1,40 +1,53 @@
 import { Position } from './types'
 
-class Vector {
-	constructor(private _x: number, private _y: number) {}
+interface Vector {
+	position: Position
+}
 
-	public get position(): Position {
-		return { x: this._x, y: this._y }
+class Vector {
+	constructor(position: Position | Vector) {
+		if ('x' in position) {
+			const { x, y } = position
+			this.position = { x, y }
+		} else {
+			const {
+				position: { x, y },
+			} = position
+			this.position = { x, y }
+		}
 	}
 
 	public normalise(): Vector {
 		const hypotenuse = Vector.getHypotenuse(this.position)
-		this._x = this._x / hypotenuse || 0
-		this._y = this._y / hypotenuse || 0
+		this.position.x = this.position.x / hypotenuse || 0
+		this.position.y = this.position.y / hypotenuse || 0
 		return this
 	}
 
-	public subtract(v: Position): Vector {
-		this._x -= v.x
-		this._y -= v.y
+	public subtract(v: Position | Vector): Vector {
+		const position = 'x' in v ? v : v.position
+		this.position.x -= position.x
+		this.position.y -= position.y
 		return this
 	}
 
-	public add(v: Position): Vector {
-		this._x += v.x
-		this._y += v.y
+	public add(v: Position | Vector): Vector {
+		const position = 'x' in v ? v : v.position
+		this.position.x += position.x
+		this.position.y += position.y
 		return this
 	}
 
 	public scale(s: number): Vector {
-		this._x *= s
-		this._y *= s
+		this.position.x *= s
+		this.position.y *= s
 		return this
 	}
 
-	public dist(v: Position): number {
-		const x = this._x - v.x
-		const y = this._y - v.y
+	public dist(v: Position | Vector): number {
+		const position = 'x' in v ? v : v.position
+		const x = this.position.x - position.x
+		const y = this.position.y - position.y
 		return Vector.getHypotenuse({ x, y })
 	}
 

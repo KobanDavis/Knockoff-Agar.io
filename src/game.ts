@@ -2,12 +2,14 @@ import Blob from './blob'
 import UserBlob from './userBlob'
 import Vector from './vector'
 import InputHandler from './inputHandler'
+import { lerp } from './helper'
 
 interface Game {
 	ctx: CanvasRenderingContext2D
 	blobs: Blob[]
 	user: UserBlob
 	frame: number
+	zoom: number
 }
 
 const generateColor = (amount: number = 120): string => {
@@ -17,10 +19,11 @@ const generateColor = (amount: number = 120): string => {
 
 class Game {
 	constructor() {
+		this.zoom = 1
 		this.blobs = []
 		this.frame = 0
 		this.ctx = Game.init()
-		this.user = new UserBlob(this.ctx, new Vector(0, 0), 20, generateColor())
+		this.user = new UserBlob(this.ctx, new Vector({ x: 0, y: 0 }), 20, generateColor())
 		// eslint-disable-next-line
 		new InputHandler(this, this.user)
 	}
@@ -28,12 +31,7 @@ class Game {
 	public startDrawLoop(): void {
 		const blobs: Blob[] = []
 
-		for (let i = 0; i < 50; i++) {
-			const x = Math.random() * innerWidth * 2 - innerWidth
-			const y = Math.random() * innerHeight * 2 - innerHeight
-
-			blobs.push(new Blob(this.ctx, new Vector(x, y), Math.random() * 5 + 10, generateColor()))
-		}
+		this.generateFood(100)
 
 		blobs.forEach((blob) => this.addBlob(blob))
 
@@ -51,9 +49,11 @@ class Game {
 
 		this.user.moveToCursor()
 
+		// Set scale
 		this.ctx.translate(innerWidth / 2, innerHeight / 2)
-		const scale = 30 / (this.user._radius / 2)
-		this.ctx.scale(scale, scale)
+		const newZoom = 10 / Math.sqrt(this.user._radius)
+		this.zoom = lerp(this.zoom, newZoom, 0.1)
+		this.ctx.scale(this.zoom, this.zoom)
 		this.ctx.translate(-this.user._vector.position.x, -this.user._vector.position.y)
 
 		this.user.show()
@@ -87,7 +87,7 @@ class Game {
 		for (let i = 0; i < n; i++) {
 			const x = Math.random() * innerWidth * 2 - innerWidth
 			const y = Math.random() * innerHeight * 2 - innerHeight
-			this.addBlob(new Blob(this.ctx, new Vector(x, y), Math.random() * 5 + 10, generateColor()))
+			this.addBlob(new Blob(this.ctx, new Vector({ x, y }), Math.random() * 5 + 10, generateColor()))
 		}
 	}
 }

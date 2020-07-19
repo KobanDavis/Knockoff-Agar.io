@@ -49,17 +49,10 @@ class UserBlob extends Blob {
 				.subtract({ x: innerWidth / 2, y: innerHeight / 2 })
 				.normalise()
 			this._radius = radius
-			// const position = new Vector(this._vector.position.x, this._vector.position.y).add(direction.scale(this._radius).position)
-			game.addBlob(
-				new MassBlob(
-					this._ctx,
-					new Vector(this._vector.position.x, this._vector.position.y),
-					MASS_RADIUS,
-					this._color,
-					direction,
-					this.velocity
-				)
-			)
+
+			const thisPosition = new Vector(this._vector)
+			const newPosition = thisPosition.add(new Vector(direction).scale(this._radius - MASS_RADIUS / 2))
+			game.addBlob(new MassBlob(this._ctx, newPosition, MASS_RADIUS, this._color, direction, this.velocity))
 		}
 	}
 }
